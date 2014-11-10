@@ -1,10 +1,5 @@
-(defn fibonacci [max-number]
-    (loop [payload '(2 1)
-           i 3]
-      (let [last-i (first payload)]
-        (if (>= i max-number)
-          payload
-          (recur (cons i payload)
-                 (+ i last-i))))))
+(defn fibonacci [a b]
+  (if (< a 4000000)
+    (cons a (lazy-seq (fibonacci b (+ b a))))))
 
-(reduce + (filter even? (fibonacci 4000000)))
+(reduce + (filter even? (fibonacci 1 1)))
