@@ -1,31 +1,39 @@
-;(defn palindrome? [i]
-;  (def i-count (count (str i)))
-;  (loop [i-to-a '() 
-;        remaining-num i]
-;    (let [n (mod remaining-num 10)]
-;      (if (= i-count (count i-to-a))
-;        i-to-a 
-;        ;(= (reverse i-to-a) i-to-a)
-;        (recur (cons n i-to-a) 
-;               n)))))
+(defn remove-last-char [string]
+  (clojure.string/replace string #".$" ""))
 
-; broke
+(defn last-char [string]
+  (re-find #".$" string))
+
 (defn number-to-a [i]
-  (loop [num-to-convert i
+  (let [num-str (str i)]
+  (loop [num-to-convert num-str
          num-array '()]
-    (let [last-digit (mod num-to-convert 10)
-          remaining-num (/ num-to-convert 10)]
-      (cons last-digit num-array)
-      (if (= (count (str remaining-num)) 0)
-        num-array
-        (recur remaining-num 
-               num-array)))))
-  
+    (let [last-digit (last-char num-to-convert)
+          remaining-num (remove-last-char num-to-convert)]
+      (if (= (count remaining-num) 0)
+        (cons last-digit num-array)
+        (recur remaining-num
+               (cons last-digit num-array)))))))
 
-; (defn palindromes
-;   ;(let [range1 (range 100 1000)])
-;   ;(let [range2 (range 100 1000)])
-;   )
-; 
-; 
+(defn palindrome? [i]
+  (let [num-array (number-to-a i)]
+    (= num-array (reverse num-array))))
+
+; need a new approach here
+;
+;(defn find-palindromes
+;  (let [range1 (range 100 1000)
+;        range2 (range 100 1000)]
+;    (loop [outer-range range1
+;           inner-range range2
+;           palindromes '()]
+;      (let [candidate (palindrome? (* (take 1 range1) (take 1 range2)))]
+;      (if (palindrome? candidate)
+;        (recur range1
+;               (rest range2)
+;               (cons candatidate palindromes))
+;        (recur range1
+;               (rest range2)
+;               palindromes))))))
+;        
 ; (apply max palindromes)
